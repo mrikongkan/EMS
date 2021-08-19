@@ -12,12 +12,12 @@
     <meta name="description" content="Portal - Bootstrap 5 Admin Dashboard Template For Developers">
     <meta name="author" content="Xiaoying Riley at 3rd Wave Media">
     <link rel="shortcut icon" href="../images/ems.png">
-    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../assets/plugins/bootstrap/css/bootstrap.min.css">
 
     <!-- FontAwesome JS-->
-    <script defer src="assets/plugins/fontawesome/js/all.min.js"></script>
+    <script defer src="../assets/plugins/fontawesome/js/all.min.js"></script>
 
     <!-- App CSS -->
-    <link id="theme-style" rel="stylesheet" href="assets/css/portal.css">
+    <link id="theme-style" rel="stylesheet" href="../assets/css/portal.css">
 
 </head>

@@ -1,8 +1,9 @@
 <?php session_start(); ?>
 <?php include 'header.php'; ?>
+<?php include 'dbconn.php' ?>
 <section class="content-height">
     <div class="container mt-5">
-    <div class="row text-center py-3">
+        <div class="row text-center py-3">
             <?php
             if (isset($_SESSION['usr_id']) && isset($_SESSION['usr_name'])) {
                 echo strtoupper('<small> WELCOME TO YOUR DASHBOARD, ' . strtoupper($_SESSION['usr_name']) . "</small>");
@@ -14,6 +15,66 @@
             }
             ?>
         </div>
+        <style>
+            input.invalid {
+                background-color: #ffdddd;
+            }
+        </style>
+        <div class="row text-left py-3 form-validate">
+            <?php
+            if (isset($_SESSION['delseid'])) {
+                echo $_SESSION['delseid'];
+                unset($_SESSION['delseid']);              
+            }
+            if (isset($_SESSION['success'])) {
+                echo $_SESSION['success'];
+                unset($_SESSION['success']);              
+            }
+            ?>
+            <form class="row g-3" method="post" action="addnew_user.php" enctype="multipart/form-data" onsubmit="return dataValidatelogIn();">
+                <div class="col-md-3 offset-md-1">
+                    <label for="inputCity" class="form-label">User Name</label>
+                    <input type="text" class="form-control" name="new_user" id="new_userfor" placeholder="User Name">
+                    <small id="UserName" class="form-text text-muted"><?php
+                                                                        if (isset($_SESSION['add_username'])) {
+                                                                            echo $_SESSION['add_username'];
+                                                                            unset($_SESSION['add_username']);
+                                                                        } else {
+                                                                            echo "";
+                                                                        }
+                                                                        if (isset($_SESSION['username_exits'])) {
+                                                                            echo $_SESSION['username_exits'];
+                                                                            unset($_SESSION['username_exits']);
+                                                                        } else {
+                                                                            echo "Please Use an Unique User Name.";
+                                                                        }
+                                                                        ?></small>
+                </div>
+                <div class="col-md-3">
+                    <label for="inputState" class="form-label">State</label>
+                    <select id="inputStateFor" name="checkstate" class="form-select">
+                        <option selected>Choose State</option>
+                        <option name="checkstate">Full</option>
+                        <option name="checkstate">Demo</option>
+                    </select>
+                    <small id="inputState" class="form-text text-muted"><?php
+                                                                        if (isset($_SESSION['state-Sel'])) {
+                                                                            echo  $_SESSION['state-Sel'];
+                                                                            unset($_SESSION['state-Sel']);
+                                                                        } else {
+                                                                            echo " ";
+                                                                        }
+                                                                        ?></small>
+                </div>
+                <div class="col-md-3 offset-md-1">
+                    <button type="submit" style="margin-top: 35px;" name="addnew_user" class="btn app-btn-primary w-100 theme-btn mx-auto">Add New User</button>
+                </div>
+
+            </form>
+        </div>
+
+
+
 
         <body class="app">
             <header class="app-header fixed-top">
@@ -64,7 +125,7 @@
                                                 <div class="item p-3">
                                                     <div class="row gx-2 justify-content-between align-items-center">
                                                         <div class="col-auto">
-                                                            <img class="profile-image" src="assets/images/profiles/profile-1.png" alt="">
+                                                            <img class="profile-image" src="../images/avatar.png" alt="">
                                                         </div>
                                                         <!--//col-->
                                                         <div class="col">
@@ -154,7 +215,7 @@
                                     </div>
                                     <!--//app-utility-item-->
                                     <div class="app-utility-item">
-                                        <a href="settings.html" title="Settings">
+                                        <a href="#" title="Settings">
                                             <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
                                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-gear icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd" d="M8.837 1.626c-.246-.835-1.428-.835-1.674 0l-.094.319A1.873 1.873 0 0 1 4.377 3.06l-.292-.16c-.764-.415-1.6.42-1.184 1.185l.159.292a1.873 1.873 0 0 1-1.115 2.692l-.319.094c-.835.246-.835 1.428 0 1.674l.319.094a1.873 1.873 0 0 1 1.115 2.693l-.16.291c-.415.764.42 1.6 1.185 1.184l.292-.159a1.873 1.873 0 0 1 2.692 1.116l.094.318c.246.835 1.428.835 1.674 0l.094-.319a1.873 1.873 0 0 1 2.693-1.115l.291.16c.764.415 1.6-.42 1.184-1.185l-.159-.291a1.873 1.873 0 0 1 1.116-2.693l.318-.094c.835-.246.835-1.428 0-1.674l-.319-.094a1.873 1.873 0 0 1-1.115-2.692l.16-.292c.415-.764-.42-1.6-1.185-1.184l-.291.159A1.873 1.873 0 0 1 8.93 1.945l-.094-.319zm-2.633-.283c.527-1.79 3.065-1.79 3.592 0l.094.319a.873.873 0 0 0 1.255.52l.292-.16c1.64-.892 3.434.901 2.54 2.541l-.159.292a.873.873 0 0 0 .52 1.255l.319.094c1.79.527 1.79 3.065 0 3.592l-.319.094a.873.873 0 0 0-.52 1.255l.16.292c.893 1.64-.902 3.434-2.541 2.54l-.292-.159a.873.873 0 0 0-1.255.52l-.094.319c-.527 1.79-3.065 1.79-3.592 0l-.094-.319a.873.873 0 0 0-1.255-.52l-.292.16c-1.64.893-3.433-.902-2.54-2.541l.159-.292a.873.873 0 0 0-.52-1.255l-.319-.094c-1.79-.527-1.79-3.065 0-3.592l.319-.094a.873.873 0 0 0 .52-1.255l-.16-.292c-.892-1.64.902-3.433 2.541-2.54l.292.159a.873.873 0 0 0 1.255-.52l.094-.319z" />
@@ -165,10 +226,10 @@
                                     <!--//app-utility-item-->
 
                                     <div class="app-utility-item app-user-dropdown dropdown">
-                                        <a class="dropdown-toggle" id="user-dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><img src="assets/images/user.png" alt="user profile"></a>
+                                        <a class="dropdown-toggle" id="user-dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><img src="../images/avatar.png" alt="user profile"></a>
                                         <ul class="dropdown-menu" aria-labelledby="user-dropdown-toggle">
-                                            <li><a class="dropdown-item" href="account.html">Account</a></li>
-                                            <li><a class="dropdown-item" href="settings.html">Settings</a></li>
+                                            <li><a class="dropdown-item" href="dashboard.php">Account</a></li>
+                                            <li><a class="dropdown-item" href="#">Settings</a></li>
                                             <li>
                                                 <hr class="dropdown-divider">
                                             </li>
@@ -186,530 +247,184 @@
                     <!--//container-fluid-->
                 </div>
                 <!--//app-header-inner-->
-                <div id="app-sidepanel" class="app-sidepanel sidepanel-hidden">
-                    <div id="sidepanel-drop" class="sidepanel-drop"></div>
-                    <div class="sidepanel-inner d-flex flex-column">
-                        <a href="#" id="sidepanel-close" class="sidepanel-close d-xl-none">&times;</a>
-                        <div class="app-branding">
-                            <a class="app-logo" href="../index.php"><img class="logo-icon me-2" src="../images/ems.png" alt="logo"><span class="logo-text">EMS PORTAL</span></a>
 
-                        </div>
-                        <!--//app-branding-->
-                        <nav id="app-nav-main" class="app-nav app-nav-main flex-grow-1">
-                            <ul class="app-menu list-unstyled accordion" id="menu-accordion">
-                                <li class="nav-item">
-                                    <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                                    <a class="nav-link" href="index.html">
-                                        <span class="nav-icon">
-                                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-house-door" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" d="M7.646 1.146a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 .146.354v7a.5.5 0 0 1-.5.5H9.5a.5.5 0 0 1-.5-.5v-4H7v4a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .146-.354l6-6zM2.5 7.707V14H6v-4a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v4h3.5V7.707L8 2.207l-5.5 5.5z" />
-                                                <path fill-rule="evenodd" d="M13 2.5V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z" />
-                                            </svg>
-                                        </span>
-                                        <span class="nav-link-text">Overview</span>
-                                    </a>
-                                    <!--//nav-link-->
-                                </li>
-                                <!--//nav-item-->
-                                <li class="nav-item">
-                                    <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                                    <a class="nav-link" href="docs.html">
-                                        <span class="nav-icon">
-                                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-folder" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M9.828 4a3 3 0 0 1-2.12-.879l-.83-.828A1 1 0 0 0 6.173 2H2.5a1 1 0 0 0-1 .981L1.546 4h-1L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3v1z" />
-                                                <path fill-rule="evenodd" d="M13.81 4H2.19a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4zM2.19 3A2 2 0 0 0 .198 5.181l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3H2.19z" />
-                                            </svg>
-                                        </span>
-                                        <span class="nav-link-text">Docs</span>
-                                    </a>
-                                    <!--//nav-link-->
-                                </li>
-                                <!--//nav-item-->
-                                <li class="nav-item">
-                                    <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                                    <a class="nav-link active" href="orders.html">
-                                        <span class="nav-icon">
-                                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-card-list" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" d="M14.5 3h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
-                                                <path fill-rule="evenodd" d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5z" />
-                                                <circle cx="3.5" cy="5.5" r=".5" />
-                                                <circle cx="3.5" cy="8" r=".5" />
-                                                <circle cx="3.5" cy="10.5" r=".5" />
-                                            </svg>
-                                        </span>
-                                        <span class="nav-link-text">Orders</span>
-                                    </a>
-                                    <!--//nav-link-->
-                                </li>
-                                <!--//nav-item-->
-                                <li class="nav-item has-submenu">
-                                    <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                                    <a class="nav-link submenu-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#submenu-1" aria-expanded="false" aria-controls="submenu-1">
-                                        <span class="nav-icon">
-                                            <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-files" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" d="M4 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4z" />
-                                                <path d="M6 0h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2v-1a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1H4a2 2 0 0 1 2-2z" />
-                                            </svg>
-                                        </span>
-                                        <span class="nav-link-text">Pages</span>
-                                        <span class="submenu-arrow">
-                                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chevron-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
-                                            </svg>
-                                        </span>
-                                        <!--//submenu-arrow-->
-                                    </a>
-                                    <!--//nav-link-->
-                                    <div id="submenu-1" class="collapse submenu submenu-1" data-bs-parent="#menu-accordion">
-                                        <ul class="submenu-list list-unstyled">
-                                            <li class="submenu-item"><a class="submenu-link" href="notifications.html">Notifications</a></li>
-                                            <li class="submenu-item"><a class="submenu-link" href="account.html">Account</a></li>
-                                            <li class="submenu-item"><a class="submenu-link" href="settings.html">Settings</a></li>
-
-                                        </ul>
-                                    </div>
-                                </li>
-                                <!--//nav-item-->
-                                <li class="nav-item has-submenu">
-                                    <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                                    <a class="nav-link submenu-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#submenu-2" aria-expanded="false" aria-controls="submenu-2">
-                                        <span class="nav-icon">
-                                            <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-columns-gap" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" d="M6 1H1v3h5V1zM1 0a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm14 12h-5v3h5v-3zm-5-1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-5zM6 8H1v7h5V8zM1 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H1zm14-6h-5v7h5V1zm-5-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1h-5z" />
-                                            </svg>
-                                        </span>
-                                        <span class="nav-link-text">External</span>
-                                        <span class="submenu-arrow">
-                                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chevron-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
-                                            </svg>
-                                        </span>
-                                        <!--//submenu-arrow-->
-                                    </a>
-                                    <!--//nav-link-->
-                                    <div id="submenu-2" class="collapse submenu submenu-2" data-bs-parent="#menu-accordion">
-                                        <ul class="submenu-list list-unstyled">
-                                            <li class="submenu-item"><a class="submenu-link" href="../login.php">Login</a></li>
-                                            <li class="submenu-item"><a class="submenu-link" href="../registration.php">Signup</a></li>
-                                            <li class="submenu-item"><a class="submenu-link" href="reset-password.html">Reset password</a></li>
-                                            <li class="submenu-item"><a class="submenu-link" href="404.php">404 page</a></li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <!--//nav-item-->
-
-                                <li class="nav-item">
-                                    <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                                    <a class="nav-link" href="charts.html">
-                                        <span class="nav-icon">
-                                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bar-chart-line" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1V2zm1 12h2V2h-2v12zm-3 0V7H7v7h2zm-5 0v-3H2v3h2z" />
-                                            </svg>
-                                        </span>
-                                        <span class="nav-link-text">Charts</span>
-                                    </a>
-                                    <!--//nav-link-->
-                                </li>
-                                <!--//nav-item-->
-                                <li class="nav-item">
-                                    <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                                    <a class="nav-link" href="help.html">
-                                        <span class="nav-icon">
-                                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-question-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
-                                            </svg>
-                                        </span>
-                                        <span class="nav-link-text">Help</span>
-                                    </a>
-                                    <!--//nav-link-->
-                                </li>
-                                <!--//nav-item-->
-                            </ul>
-                            <!--//app-menu-->
-                        </nav>
-                        <!--//app-nav-->
-                        <div class="app-sidepanel-footer">
-                            <nav class="app-nav app-nav-footer">
-                                <ul class="app-menu footer-menu list-unstyled">
-                                    <li class="nav-item">
-                                        <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                                        <a class="nav-link" href="settings.html">
-                                            <span class="nav-icon">
-                                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-gear" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" d="M8.837 1.626c-.246-.835-1.428-.835-1.674 0l-.094.319A1.873 1.873 0 0 1 4.377 3.06l-.292-.16c-.764-.415-1.6.42-1.184 1.185l.159.292a1.873 1.873 0 0 1-1.115 2.692l-.319.094c-.835.246-.835 1.428 0 1.674l.319.094a1.873 1.873 0 0 1 1.115 2.693l-.16.291c-.415.764.42 1.6 1.185 1.184l.292-.159a1.873 1.873 0 0 1 2.692 1.116l.094.318c.246.835 1.428.835 1.674 0l.094-.319a1.873 1.873 0 0 1 2.693-1.115l.291.16c.764.415 1.6-.42 1.184-1.185l-.159-.291a1.873 1.873 0 0 1 1.116-2.693l.318-.094c.835-.246.835-1.428 0-1.674l-.319-.094a1.873 1.873 0 0 1-1.115-2.692l.16-.292c.415-.764-.42-1.6-1.185-1.184l-.291.159A1.873 1.873 0 0 1 8.93 1.945l-.094-.319zm-2.633-.283c.527-1.79 3.065-1.79 3.592 0l.094.319a.873.873 0 0 0 1.255.52l.292-.16c1.64-.892 3.434.901 2.54 2.541l-.159.292a.873.873 0 0 0 .52 1.255l.319.094c1.79.527 1.79 3.065 0 3.592l-.319.094a.873.873 0 0 0-.52 1.255l.16.292c.893 1.64-.902 3.434-2.541 2.54l-.292-.159a.873.873 0 0 0-1.255.52l-.094.319c-.527 1.79-3.065 1.79-3.592 0l-.094-.319a.873.873 0 0 0-1.255-.52l-.292.16c-1.64.893-3.433-.902-2.54-2.541l.159-.292a.873.873 0 0 0-.52-1.255l-.319-.094c-1.79-.527-1.79-3.065 0-3.592l.319-.094a.873.873 0 0 0 .52-1.255l-.16-.292c-.892-1.64.902-3.433 2.541-2.54l.292.159a.873.873 0 0 0 1.255-.52l.094-.319z" />
-                                                    <path fill-rule="evenodd" d="M8 5.754a2.246 2.246 0 1 0 0 4.492 2.246 2.246 0 0 0 0-4.492zM4.754 8a3.246 3.246 0 1 1 6.492 0 3.246 3.246 0 0 1-6.492 0z" />
-                                                </svg>
-                                            </span>
-                                            <span class="nav-link-text">Settings</span>
-                                        </a>
-                                        <!--//nav-link-->
-                                    </li>
-                                    <!--//nav-item-->
-                                    <li class="nav-item">
-                                        <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                                        <a class="nav-link" href="https://themes.3rdwavemedia.com/bootstrap-templates/admin-dashboard/portal-free-bootstrap-admin-dashboard-template-for-developers/">
-                                            <span class="nav-icon">
-                                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-download" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                                                    <path fill-rule="evenodd" d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
-                                                </svg>
-                                            </span>
-                                            <span class="nav-link-text">Download</span>
-                                        </a>
-                                        <!--//nav-link-->
-                                    </li>
-                                    <!--//nav-item-->
-                                    <li class="nav-item">
-                                        <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                                        <a class="nav-link" href="https://themes.3rdwavemedia.com/bootstrap-templates/admin-dashboard/portal-free-bootstrap-admin-dashboard-template-for-developers/">
-                                            <span class="nav-icon">
-                                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-person" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" d="M12 1H4a1 1 0 0 0-1 1v10.755S4 11 8 11s5 1.755 5 1.755V2a1 1 0 0 0-1-1zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z" />
-                                                    <path fill-rule="evenodd" d="M8 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-                                                </svg>
-                                            </span>
-                                            <span class="nav-link-text">License</span>
-                                        </a>
-                                        <!--//nav-link-->
-                                    </li>
-                                    <!--//nav-item-->
-                                </ul>
-                                <!--//footer-menu-->
-                            </nav>
-                        </div>
-                        <!--//app-sidepanel-footer-->
-                    </div>
-                    <!--//sidepanel-inner-->
-                </div>
-                <!--//app-sidepanel-->
             </header>
             <!--//app-header-->
 
-            <div class="app-wrapper">
+            <div class="app-content pt-3 p-md-3 p-lg-4">
+                <div class="container-xl">
+                    <div class="tab-content" id="orders-table-tab-content">
+                        <div class="tab-pane fade show active" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
+                            <div class="app-card app-card-orders-table shadow-sm mb-5">
+                                <div class="app-card-body">
+                                    <div class="table-responsive">  
+                                        <?php 
+                                            $st = "SELECT * FROM `ems`.`adduser` LIMIT 1";
+                                            $result = $conn->query($st);
+                                            $result->execute();
+                                            $data = $result->rowCount();
+                                           // echo $data;
+                                           if($data > 0){
+                                               $displaytable = "";
+                                           }
+                                           else{
+                                            $displaytable = " displaynotable";
+                                           }                                           
+                                        ?>
+                                        <style>
+                                            .displaynotable{
+                                                display: none;
+                                            }
+                                        </style>
+                                       <table class="table app-table-hover mb-0 text-center <?php echo $displaytable;?>">
+                                            <thead>
+                                                <tr>
+                                                    <th class="cell">Sr. No.</th>
+                                                    <th class="cell">Username</th>
+                                                    <th class="cell">Creation Date</th>
+                                                    <th class="cell">Expire Date</th>
+                                                    <th class="cell">Left Days</th>
+                                                    <th class="cell">Status</th>
+                                                    <th colspan="5" class="cell text-center">Action</th>
+                                                </tr>
+                                            </thead>
 
-                <div class="app-content pt-3 p-md-3 p-lg-4">
-                    <div class="container-xl">
+                                            <tbody>
+                                                <tr>
+                                                    <?php
+                                                    $i = 1;
+                                                    $stmnt = "SELECT * FROM `ems`.`adduser`";
+                                                    $result = $conn->prepare($stmnt);
 
-                        <div class="row g-3 mb-4 align-items-center justify-content-between">
-                            <div class="col-auto">
-                                <h1 class="app-page-title mb-0">Orders</h1>
-                            </div>
-                            <div class="col-auto">
-                                <div class="page-utilities">
-                                    <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
-                                        <div class="col-auto">
-                                            <form class="table-search-form row gx-1 align-items-center">
-                                                <div class="col-auto">
-                                                    <input type="text" id="search-orders" name="searchorders" class="form-control search-orders" placeholder="Search">
-                                                </div>
-                                                <div class="col-auto">
-                                                    <button type="submit" class="btn app-btn-secondary">Search</button>
-                                                </div>
-                                            </form>
+                                                    // $result->bindParam(':user_email', $usr_email, PDO::PARAM_STR);
+                                                    // $result->bindParam(':user_pass', $usr_password, PDO::PARAM_STR);        
+                                                    $result->execute();
+                                                    $count = $result->rowCount();
+                                                    //echo $count;
+                                                    if ($count > 0) {                                                     
+                                                        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                                                            $expiredate = strtotime($row['addusr_exipre']);
+                                                            $todaydate = strtotime(date('Y-m-d h:i:sa'));
+                                                            $daysleft=ceil(($expiredate-$todaydate )/60/60/24);
 
-                                        </div>
-                                        <!--//col-->
-                                        <div class="col-auto">
+                                                            $user_nid = $row['addusr_id'];
+                                                            if ($expiredate >  $todaydate) {
+                                                                $status = "Active";
+                                                            } else {
+                                                                $status = "Expire";
+                                                            }                                                           
 
-                                            <select class="form-select w-auto">
-                                                <option selected value="option-1">All</option>
-                                                <option value="option-2">This week</option>
-                                                <option value="option-3">This month</option>
-                                                <option value="option-4">Last 3 months</option>
+                                                    ?>     
+                                                    <script type="text/javascript">
+                                                        var status = "Active";
+                                                        if(status == "Active"){
+                                                            document.getElementById('deactivationbtn').innerHTML = "Deactivate";
+                                                        }
+                                                        else{
+                                                            document.getElementById('deactivationbtn').innerHTML = "Active";
+                                                        }
+                                                    </script>                                    
+                                                            <td class="cell"><?php echo $i; ?></td>
+                                                            <td class="cell"><?PHP echo $row['addusr_name']; ?></td>
+                                                            <td class="cell"><?PHP echo $row['addusr_signup_date']; ?></td>
+                                                            <td class="cell"><?php echo $row['addusr_exipre']; ?></td>
+                                                            <td class="cell"><?php echo $daysleft; ?></td>
+                                                            <td class="cell"><?php echo $status; ?></td>
+                                                            <td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a></td>
+                                                            <td class="cell"><a class="btn-sm app-btn-secondary" href="#">Add</a></td>
+                                                            <td class="cell"><a class="btn-sm app-btn-secondary" href="#">Reset</a></td>
+                                                            <td class="cell"><a class="btn-sm app-btn-secondary" id="deactivationbtn" href="deactivae_user.php?id=<?php echo $row['addusr_id'];?>">Deactivate</a></td>
+                                                            
+                                                </tr> <?php $i++;
+                                                        }
+                                                    } else {
+                                                        $record =  "<h4 class='text-center p-5'>No Record is Founded!</h4>";                                                        
+                                                        echo $record;
+                                                    }
+                                                        ?>
 
-                                            </select>
-                                        </div>
-                                        <div class="col-auto">
-                                            <a class="btn app-btn-secondary" href="#">
-                                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-download me-1" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                                                    <path fill-rule="evenodd" d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
-                                                </svg>
-                                                Download CSV
-                                            </a>
-                                        </div>
+
+                                            </tbody>
+                                        </table>
+
+
                                     </div>
-                                    <!--//row-->
+                                    <!--//table-responsive-->
+
                                 </div>
-                                <!--//table-utilities-->
+                                <!--//app-card-body-->
                             </div>
-                            <!--//col-auto-->
+                            <!--//app-card-->  
+                            <?php 
+                                            $st = "SELECT * FROM `ems`.`adduser`";
+                                            $result = $conn->query($st);
+                                            $result->execute();
+                                            $data = $result->rowCount();
+                                           // echo $data;
+                                           if($data >= 10){
+                                               $displaynav = "";
+                                           }
+                                           else{
+                                            $displaynav = " displaynonav";
+                                           }                                           
+                                        ?>
+                                        <style>
+                                            .displaynonav{
+                                                display: none;
+                                            }
+                                        </style>                         
+                            <nav class="app-pagination <?php echo $displaynav ?>">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                            <!--//app-pagination-->
+
                         </div>
-                        <!--//row-->
+                        <!--//tab-pane-->
 
 
-                        <nav id="orders-table-tab" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
-                            <a class="flex-sm-fill text-sm-center nav-link active" id="orders-all-tab" data-bs-toggle="tab" href="#orders-all" role="tab" aria-controls="orders-all" aria-selected="true">All</a>
-                            <a class="flex-sm-fill text-sm-center nav-link" id="orders-paid-tab" data-bs-toggle="tab" href="#orders-paid" role="tab" aria-controls="orders-paid" aria-selected="false">Paid</a>
-                            <a class="flex-sm-fill text-sm-center nav-link" id="orders-pending-tab" data-bs-toggle="tab" href="#orders-pending" role="tab" aria-controls="orders-pending" aria-selected="false">Pending</a>
-                            <a class="flex-sm-fill text-sm-center nav-link" id="orders-cancelled-tab" data-bs-toggle="tab" href="#orders-cancelled" role="tab" aria-controls="orders-cancelled" aria-selected="false">Cancelled</a>
-                        </nav>
-
-
-                        <div class="tab-content" id="orders-table-tab-content">
-                            <div class="tab-pane fade show active" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
-                                <div class="app-card app-card-orders-table shadow-sm mb-5">
-                                    <div class="app-card-body">
-                                        <div class="table-responsive">
-                                            <table class="table app-table-hover mb-0 text-left">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="cell">Order</th>
-                                                        <th class="cell">Product</th>
-                                                        <th class="cell">Customer</th>
-                                                        <th class="cell">Date</th>
-                                                        <th class="cell">Status</th>
-                                                        <th class="cell">Total</th>
-                                                        <th class="cell"></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="cell">#15346</td>
-                                                        <td class="cell"><span class="truncate">Lorem ipsum dolor sit amet eget volutpat erat</span></td>
-                                                        <td class="cell">John Sanders</td>
-                                                        <td class="cell"><span>17 Oct</span><span class="note">2:16 PM</span></td>
-                                                        <td class="cell"><span class="badge bg-success">Paid</span></td>
-                                                        <td class="cell">$259.35</td>
-                                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="cell">#15345</td>
-                                                        <td class="cell"><span class="truncate">Consectetur adipiscing elit</span></td>
-                                                        <td class="cell">Dylan Ambrose</td>
-                                                        <td class="cell"><span class="cell-data">16 Oct</span><span class="note">03:16 AM</span></td>
-                                                        <td class="cell"><span class="badge bg-warning">Pending</span></td>
-                                                        <td class="cell">$96.20</td>
-                                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="cell">#15344</td>
-                                                        <td class="cell"><span class="truncate">Pellentesque diam imperdiet</span></td>
-                                                        <td class="cell">Teresa Holland</td>
-                                                        <td class="cell"><span class="cell-data">16 Oct</span><span class="note">01:16 AM</span></td>
-                                                        <td class="cell"><span class="badge bg-success">Paid</span></td>
-                                                        <td class="cell">$123.00</td>
-                                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="cell">#15343</td>
-                                                        <td class="cell"><span class="truncate">Vestibulum a accumsan lectus sed mollis ipsum</span></td>
-                                                        <td class="cell">Jayden Massey</td>
-                                                        <td class="cell"><span class="cell-data">15 Oct</span><span class="note">8:07 PM</span></td>
-                                                        <td class="cell"><span class="badge bg-success">Paid</span></td>
-                                                        <td class="cell">$199.00</td>
-                                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="cell">#15342</td>
-                                                        <td class="cell"><span class="truncate">Justo feugiat neque</span></td>
-                                                        <td class="cell">Reina Brooks</td>
-                                                        <td class="cell"><span class="cell-data">12 Oct</span><span class="note">04:23 PM</span></td>
-                                                        <td class="cell"><span class="badge bg-danger">Cancelled</span></td>
-                                                        <td class="cell">$59.00</td>
-                                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="cell">#15341</td>
-                                                        <td class="cell"><span class="truncate">Morbi vulputate lacinia neque et sollicitudin</span></td>
-                                                        <td class="cell">Raymond Atkins</td>
-                                                        <td class="cell"><span class="cell-data">11 Oct</span><span class="note">11:18 AM</span></td>
-                                                        <td class="cell"><span class="badge bg-success">Paid</span></td>
-                                                        <td class="cell">$678.26</td>
-                                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <!--//table-responsive-->
-
-                                    </div>
-                                    <!--//app-card-body-->
-                                </div>
-                                <!--//app-card-->
-                                <nav class="app-pagination">
-                                    <ul class="pagination justify-content-center">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                        </li>
-                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">Next</a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                                <!--//app-pagination-->
-
-                            </div>
-                            <!--//tab-pane-->
-
-                            <div class="tab-pane fade" id="orders-paid" role="tabpanel" aria-labelledby="orders-paid-tab">
-                                <div class="app-card app-card-orders-table mb-5">
-                                    <div class="app-card-body">
-                                        <div class="table-responsive">
-
-                                            <table class="table mb-0 text-left">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="cell">Order</th>
-                                                        <th class="cell">Product</th>
-                                                        <th class="cell">Customer</th>
-                                                        <th class="cell">Date</th>
-                                                        <th class="cell">Status</th>
-                                                        <th class="cell">Total</th>
-                                                        <th class="cell"></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="cell">#15346</td>
-                                                        <td class="cell"><span class="truncate">Lorem ipsum dolor sit amet eget volutpat erat</span></td>
-                                                        <td class="cell">John Sanders</td>
-                                                        <td class="cell"><span>17 Oct</span><span class="note">2:16 PM</span></td>
-                                                        <td class="cell"><span class="badge bg-success">Paid</span></td>
-                                                        <td class="cell">$259.35</td>
-                                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="cell">#15344</td>
-                                                        <td class="cell"><span class="truncate">Pellentesque diam imperdiet</span></td>
-                                                        <td class="cell">Teresa Holland</td>
-                                                        <td class="cell"><span class="cell-data">16 Oct</span><span class="note">01:16 AM</span></td>
-                                                        <td class="cell"><span class="badge bg-success">Paid</span></td>
-                                                        <td class="cell">$123.00</td>
-                                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="cell">#15343</td>
-                                                        <td class="cell"><span class="truncate">Vestibulum a accumsan lectus sed mollis ipsum</span></td>
-                                                        <td class="cell">Jayden Massey</td>
-                                                        <td class="cell"><span class="cell-data">15 Oct</span><span class="note">8:07 PM</span></td>
-                                                        <td class="cell"><span class="badge bg-success">Paid</span></td>
-                                                        <td class="cell">$199.00</td>
-                                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-
-
-                                                    <tr>
-                                                        <td class="cell">#15341</td>
-                                                        <td class="cell"><span class="truncate">Morbi vulputate lacinia neque et sollicitudin</span></td>
-                                                        <td class="cell">Raymond Atkins</td>
-                                                        <td class="cell"><span class="cell-data">11 Oct</span><span class="note">11:18 AM</span></td>
-                                                        <td class="cell"><span class="badge bg-success">Paid</span></td>
-                                                        <td class="cell">$678.26</td>
-                                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <!--//table-responsive-->
-                                    </div>
-                                    <!--//app-card-body-->
-                                </div>
-                                <!--//app-card-->
-                            </div>
-                            <!--//tab-pane-->
-
-                            <div class="tab-pane fade" id="orders-pending" role="tabpanel" aria-labelledby="orders-pending-tab">
-                                <div class="app-card app-card-orders-table mb-5">
-                                    <div class="app-card-body">
-                                        <div class="table-responsive">
-                                            <table class="table mb-0 text-left">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="cell">Order</th>
-                                                        <th class="cell">Product</th>
-                                                        <th class="cell">Customer</th>
-                                                        <th class="cell">Date</th>
-                                                        <th class="cell">Status</th>
-                                                        <th class="cell">Total</th>
-                                                        <th class="cell"></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="cell">#15345</td>
-                                                        <td class="cell"><span class="truncate">Consectetur adipiscing elit</span></td>
-                                                        <td class="cell">Dylan Ambrose</td>
-                                                        <td class="cell"><span class="cell-data">16 Oct</span><span class="note">03:16 AM</span></td>
-                                                        <td class="cell"><span class="badge bg-warning">Pending</span></td>
-                                                        <td class="cell">$96.20</td>
-                                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <!--//table-responsive-->
-                                    </div>
-                                    <!--//app-card-body-->
-                                </div>
-                                <!--//app-card-->
-                            </div>
-                            <!--//tab-pane-->
-                            <div class="tab-pane fade" id="orders-cancelled" role="tabpanel" aria-labelledby="orders-cancelled-tab">
-                                <div class="app-card app-card-orders-table mb-5">
-                                    <div class="app-card-body">
-                                        <div class="table-responsive">
-                                            <table class="table mb-0 text-left">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="cell">Order</th>
-                                                        <th class="cell">Product</th>
-                                                        <th class="cell">Customer</th>
-                                                        <th class="cell">Date</th>
-                                                        <th class="cell">Status</th>
-                                                        <th class="cell">Total</th>
-                                                        <th class="cell"></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                    <tr>
-                                                        <td class="cell">#15342</td>
-                                                        <td class="cell"><span class="truncate">Justo feugiat neque</span></td>
-                                                        <td class="cell">Reina Brooks</td>
-                                                        <td class="cell"><span class="cell-data">12 Oct</span><span class="note">04:23 PM</span></td>
-                                                        <td class="cell"><span class="badge bg-danger">Cancelled</span></td>
-                                                        <td class="cell">$59.00</td>
-                                                        <td class="cell"><a class="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <!--//table-responsive-->
-                                    </div>
-                                    <!--//app-card-body-->
-                                </div>
-                                <!--//app-card-->
-                            </div>
-                            <!--//tab-pane-->
-                        </div>
-                        <!--//tab-content-->
-
-
-
+                        <!--//table-responsive-->
                     </div>
-                    <!--//container-fluid-->
+                    <!--//app-card-body-->
                 </div>
-                <!--//app-content-->
-
-
-
-
+                <!--//app-card-->
             </div>
 
+
+
+    </div>
+    <!--//container-fluid-->
+    </div>
+    <!--//app-content-->
+
+
+
+
+    </div>
+
 </section>
+<script type="text/javascript">
+    function dataValidatelogIn() {
+        var username = $('#new_userfor').val();
+        if (username == "") {
+            alert("Please Input a User Name!");
+            return false;
+        }
+        var selectstate = $('#inputStateFor').val();
+
+        if (selectstate == " " || selectstate == "Choose State") {
+            alert("Please Select an State!");
+            return false;
+        }
+    }
+</script>
 <?php include 'footer.php'; ?>

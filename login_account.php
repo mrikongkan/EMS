@@ -23,10 +23,10 @@ try {
         if ($row) {
             if ($row['nickname'] != $usrname) {
                 $_SESSION['name_errmsg'] = "<p style='color:red;'>Your Username Doesn't Match!</p>";
-                header('location:login.php');
+                header('location:index.php');
             } elseif ($row['user_pass'] != $usr_password) {
                 $_SESSION['pass_errmsg'] = "<p style='color:red;'>Your Paswword Doesn't Match!</p>";
-                header('location:login.php');
+                header('location:index.php');
             } else {
                 $_SESSION['usr_id'] = $row['user_id'];
                 $_SESSION['usr_email'] = $row['user_email'];
